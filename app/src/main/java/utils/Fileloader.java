@@ -2,47 +2,48 @@ package utils;
 
 import models.*;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.*;
 
 public class Fileloader {
 
-  private List<Writing> writings;
-
-  public Fileloader(List<Writing> writings) {
-    this.writings = writings;
-  }
-
-  public List<Writing> loadWritings() throws FileNotFoundException {
-    List<Writing> writings = new ArrayList<>();
-    File file = new File("input.csv");
+  public List<Journal> loadWritings(List<Journal> journals,String fileName) throws FileNotFoundException {
+    File file = new File(fileName);
     Scanner scanner = new Scanner(file);
+    while(scanner.hasNextLine()) {
+      String line = scanner.nextLine();
 
-    String line = scanner.nextLine();
+      Journal journal = parseLine(line);
+      journals.add(journal);
+    }
 
-    Writing writing = parseLine(line);
-
-
-    return null;
+    return journals;
   }
 
-  public void diaryWriter(List<Writing> writings) throws IOException {
-    FileWriter fileWriter = new FileWriter("input.csv");
+  public void diaryWriter(List<Journal> journals,String newFileName) throws IOException {
+    FileWriter fileWriter = new FileWriter(newFileName);
 
-    for(Writing writing : writings) {
-      String line = writing.toCsvRow();
+    for(Journal journal : journals) {
+      String line = journal.toCsvRow();
       fileWriter.write(line + "\n");
-
     }
     fileWriter.close();
 
   }
 
-  private Writing parseLine(String line) {
+  private Journal parseLine(String line) {
+   /* if(line.isBlank()) {
+      String title = "";
+      String content ="";
+      String state = Journal.DELETED;
+      return new Journal(title,content);
+    }*/
     String[] words = line.split(",");
     String title = words[0];
     String content = words[1];
     String state = words[2];
-    return new Writing(title,content,state);
+    return new Journal(title,content);
   }
 }
+
