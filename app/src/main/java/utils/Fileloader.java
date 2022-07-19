@@ -8,7 +8,8 @@ import java.util.*;
 
 public class Fileloader {
 
-  public List<Journal> loadWritings(List<Journal> journals,String fileName) throws FileNotFoundException {
+  public List<Journal> loadWritings(String fileName) throws FileNotFoundException {
+    List<Journal> journals = new ArrayList<>();
     File file = new File(fileName);
     Scanner scanner = new Scanner(file);
     while(scanner.hasNextLine()) {

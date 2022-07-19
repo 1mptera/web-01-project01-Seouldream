@@ -13,15 +13,15 @@ public class MainFrame extends JFrame {
   private Account account;
   private JPanel contentPanel;
   private Fileloader fileloader;
-  private List<Journal> publicJournals = new ArrayList<>();
-  private List<Journal> privateJournals = new ArrayList<>();
+  private List<Journal> publicJournals;
+  private List<Journal> privateJournals;
 
   MainFrame(Account account) throws FileNotFoundException {
     fileloader = new Fileloader();
     String publicJournalFile = "input.csv";
     String myJournalFile = "private.csv";
-    publicJournals = fileloader.loadWritings(publicJournals,publicJournalFile);
-    privateJournals = fileloader.loadWritings(privateJournals,myJournalFile);
+    publicJournals = fileloader.loadWritings(publicJournalFile);
+    privateJournals = fileloader.loadWritings(myJournalFile);
     this.account = account;
 
     setMainFrameSetting();
@@ -71,7 +71,7 @@ public class MainFrame extends JFrame {
             if(contentPanel != null) {
               contentPanel.removeAll();
             }
-            contentPanel = new PivateDiaryBoardPanel(privateJournals);
+            contentPanel = new PrivateDiaryBoardPanel(privateJournals);
 
             showContentPanel();
           });

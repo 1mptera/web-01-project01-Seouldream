@@ -1,22 +1,19 @@
 package panels;
-
 import models.*;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
 import java.util.List;
 
-public class PivateDiaryBoardPanel extends JPanel {
+public class PrivateDiaryBoardPanel extends JPanel {
+  private List<Journal> privateJournals;
   private JPanel contentPanel;
   private JFrame writingFrame;
   private JTextField titleTextField;
   private JTextArea writingTextArea;
   private String title;
   private String writingContent;
-  private List<Journal> privateJournals;
 
-  public PivateDiaryBoardPanel(List<Journal> privateJournals) {
+  public PrivateDiaryBoardPanel(List<Journal> privateJournals) {
     this.privateJournals = privateJournals;
 
     this.setLayout(new BorderLayout());
@@ -32,11 +29,11 @@ public class PivateDiaryBoardPanel extends JPanel {
       openWritingWindow(saveButton);
 
       saveButton.addActionListener(saveButtonEvent -> {
+        title = titleTextField.getText();
+        writingContent = writingTextArea.getText();
 
         Journal journal = new Journal(title, writingContent);
 
-        title = titleTextField.getText();
-        writingContent = writingTextArea.getText();
 
         privateJournals.add(journal);
         writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

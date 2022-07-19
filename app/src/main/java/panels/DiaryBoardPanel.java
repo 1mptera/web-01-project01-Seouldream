@@ -1,8 +1,6 @@
 package panels;
-
 import buttons.*;
 import models.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -36,12 +34,13 @@ public class DiaryBoardPanel extends JPanel {
 
       saveButton.addActionListener(saveButtonEvent -> {
 
-        Journal journal = new Journal(title, writingContent);
-
         title = titleTextField.getText();
         writingContent = writingTextArea.getText();
 
-        publicJournals.add(journal);
+        Journal publicJournal = new Journal(title, writingContent);
+
+
+        publicJournals.add(publicJournal);
         writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         writingFrame.setVisible(false);
 
@@ -94,7 +93,7 @@ public class DiaryBoardPanel extends JPanel {
       writingFrame.setVisible(true);
 
       deleteButton.addActionListener(event2 -> {
-        journal.delete();
+        publicJournal.delete();
         writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         writingFrame.setVisible(false);
         writingListPanel = new WritingListPanel();
@@ -102,7 +101,7 @@ public class DiaryBoardPanel extends JPanel {
         refresh();
       });
       modifyButton.addActionListener(event3 -> {
-        journal.modify();
+        publicJournal.modify();
         titleTextField.setEditable(true);
         writingTextArea.setEditable(true);
         deleteModifyPanel.setLayout(new GridLayout(1, 3));
