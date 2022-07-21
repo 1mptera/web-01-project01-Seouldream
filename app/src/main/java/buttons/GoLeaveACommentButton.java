@@ -26,8 +26,8 @@ public class GoLeaveACommentButton extends FlatButton {
   }
 
   public GoLeaveACommentButton(Journal journal, List<Comment> comments,String onlyForMe) {
-    this.setText("과거의 나에게 글 남기기");
-    String registerCommentButtonName = "미래에서 온 나 보러가기";
+    this.setText("과거의 나가 남긴 한마디 보러가기");
+    String registerCommentButtonName = "미래에서 온 나에게 한마디 남기기";
     this.addActionListener(event -> {
       openCommentsWindow(journal, comments, registerCommentButtonName);
     });

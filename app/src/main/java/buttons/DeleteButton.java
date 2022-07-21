@@ -15,8 +15,7 @@ public class DeleteButton extends FlatButton {
   private JFrame writingFrame;
   private List<Journal> journals;
 
-  public DeleteButton(Journal journal, List<Journal> journals) {
-    this.journals = journals;
+  public DeleteButton(Journal journal) {
     this.setText("삭제하기");
     this.state = DeleteButton.INACTIVE;
 

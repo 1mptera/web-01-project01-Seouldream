@@ -28,7 +28,6 @@ public class Fileloader {
     Scanner scanner = new Scanner(file);
     while(scanner.hasNextLine()) {
       String line = scanner.nextLine();
-
      Comment comment = parseCommentLine(line);
      comments.add(comment);
     }
@@ -41,6 +40,17 @@ public class Fileloader {
 
     for(Journal journal : journals) {
       String line = journal.toCsvRow();
+      fileWriter.write(line + "\n");
+    }
+    fileWriter.close();
+
+  }
+
+  public void commentsWriter(List<Comment> comments,String newFileName) throws IOException {
+    FileWriter fileWriter = new FileWriter(newFileName);
+
+    for(Comment  comment : comments) {
+      String line = comment.toCsvRow();
       fileWriter.write(line + "\n");
     }
     fileWriter.close();

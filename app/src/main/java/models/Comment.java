@@ -12,17 +12,17 @@ public class Comment {
   private Journal journal;
   private String journalID;
 
-  public Comment(String journalID,String nickName,String content) {
-    this.id = journalID;
-    this.nickName = nickName;
-    this.content = content;
-    this.state = Comment.PUBLISHED;
-  }
   public Comment(Journal journal, String nickName, String content) {
     this.journal = journal;
     this.nickName = nickName;
     this.content = content;
     this.id = journal.id();
+    this.state = Comment.PUBLISHED;
+  }
+  public Comment(String journalID,String nickName,String content) {
+    this.id = journalID;
+    this.nickName = nickName;
+    this.content = content;
     this.state = Comment.PUBLISHED;
   }
 
@@ -55,5 +55,9 @@ public class Comment {
   }
   public void modify() {
     state = Comment.MODIFIED;
+  }
+
+  public String toCsvRow() {
+    return id + "," + nickName + "," + content + "," + state;
   }
 }

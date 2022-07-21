@@ -47,15 +47,4 @@ public class LetsGoWriteButton extends FlatButton {
     writingFrame.setVisible(true);
   }
 
-  private void showContentPanel(List<Journal> privateJournals) throws IOException {
-    if (contentPanel != null) {
-      contentPanel.removeAll();
-    }
-    contentPanel = new WritingListPanel(privateJournals,"onlyForME");
-
-    this.add(contentPanel);
-
-    contentPanel.setVisible((false));
-    contentPanel.setVisible(true);
-  }
 }
