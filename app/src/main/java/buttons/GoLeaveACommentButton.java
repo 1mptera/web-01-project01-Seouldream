@@ -1,5 +1,6 @@
 package buttons;
 
+import com.mommoo.flat.button.*;
 import models.*;
 import panels.*;
 
@@ -7,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class GoLeaveACommentButton extends JButton {
+public class GoLeaveACommentButton extends FlatButton {
   private Journal journal;
   private String state;
   private JFrame writingFrame;
@@ -34,7 +35,7 @@ public class GoLeaveACommentButton extends JButton {
     contentPanel = new CommentsPanel(journal,comments);
     JPanel commentRegisterPanel = new JPanel();
     JTextField textField = new JTextField(10);
-    JButton commentRegisterButton = new JButton("나도 공감 한마디!");
+    FlatButton commentRegisterButton = new FlatButton("나도 공감 한마디!");
 
     commentRegisterPanel.add(textField);
     commentRegisterPanel.add(commentRegisterButton);

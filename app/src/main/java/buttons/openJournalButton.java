@@ -1,5 +1,6 @@
 package buttons;
 
+import com.mommoo.flat.button.*;
 import models.*;
 import panels.*;
 import utils.*;
@@ -9,7 +10,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.List;
 
-public class OpenJournalButton extends JButton {
+public class OpenJournalButton extends FlatButton {
   private String title;
   private String writingContent;
   private Journal journal;
@@ -26,7 +27,8 @@ public class OpenJournalButton extends JButton {
     this.journals = journals;
     this.state = Journal.PUBLISHED;
     this.setText(journal.title());
-
+    this.setBackground(Color.getHSBColor(1,2,3));
+    this.setForeground(Color.BLACK);
     JPanel diaryBoardPanel = (JPanel)getTopLevelAncestor();
 
     Fileloader fileloader = new Fileloader();
@@ -36,7 +38,7 @@ public class OpenJournalButton extends JButton {
 
     this.addActionListener(event -> {
 
-      JButton deleteButton = new DeleteButton(journal,journals);
+      FlatButton deleteButton = new DeleteButton(journal,journals);
 
       openWritingWindow(journal,deleteButton,comments);
 
@@ -48,6 +50,7 @@ public class OpenJournalButton extends JButton {
     this.journal = journal;
     this.state = Journal.PUBLISHED;
     this.setText(journal.title());
+    this.setBackground(Color.ORANGE);
 
     Fileloader fileloader = new Fileloader();
     String commentsFile = "commentsForMyself.csv";
@@ -55,12 +58,12 @@ public class OpenJournalButton extends JButton {
     comments = fileloader.loadComments(commentsFile);
 
     this.addActionListener(event -> {
-      JButton modifyButton = new ModifyButton(journal, journals, comments);
+      FlatButton modifyButton = new ModifyButton(journal, journals, comments);
 
     });
   }
 
-    public void openWritingWindow(Journal journal, JButton button, List<Comment> comments) {
+    public void openWritingWindow(Journal journal, FlatButton button, List<Comment> comments) {
 
        writingFrame = new JFrame("오늘의 일기");
        writingFrame.setSize(400, 500);
@@ -71,7 +74,7 @@ public class OpenJournalButton extends JButton {
       titleTextField = new JTextField(10);
       JPanel contentPanel = new JPanel();
       writingTextArea = new JTextArea(30, 10);
-      JButton goLeaveACommentButton = new GoLeaveACommentButton(journal, comments);
+      FlatButton goLeaveACommentButton = new GoLeaveACommentButton(journal, comments);
 
       framePanel.setLayout(new BorderLayout());
       contentPanel.setLayout(new BorderLayout());

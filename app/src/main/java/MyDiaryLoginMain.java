@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
 
-public class MyDiary {
+public class MyDiaryLoginMain {
   private String test;
   private Account account = new Account(test);
   private JFrame loginFrame;
@@ -23,7 +23,7 @@ public class MyDiary {
   private String password;
 
     public static void main(String[] args) throws FileNotFoundException {
-      MyDiary applicaton = new MyDiary();
+      MyDiaryLoginMain applicaton = new MyDiaryLoginMain();
       applicaton.run();
     }
 

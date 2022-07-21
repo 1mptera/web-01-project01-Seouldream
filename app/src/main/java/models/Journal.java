@@ -5,17 +5,21 @@ public class Journal {
   public static final String PUBLISHED = "PUBLISHED";
   public static final String DELETED = "DELETED";
   public static final String MODIFIED = "MODIFIED";
+  public static String ON = "ON";
+  public static String OFF = "OFF";
 
   private String id;
   private String title;
   private String content;
   private String state;
+  private String switchState;
 
   public Journal(String title, String content) {
     this.id = String.valueOf(UUID.randomUUID());
     this.title = title;
     this.content = content;
     this.state = Journal.PUBLISHED;
+    this.switchState = Journal.OFF;
   }
 
   public Journal(String id, String title, String content, String state) {
@@ -23,6 +27,7 @@ public class Journal {
     this.title = title;
     this.content = content;
     this.state = state;
+    this.switchState = Journal.OFF;
   }
 
   public String id() {
@@ -60,6 +65,19 @@ public class Journal {
   public void modify() {
     state = Journal.MODIFIED;
   }
+
+  public void switchOn() {
+    switchState = Journal.ON;
+  }
+
+  public void switchOff() {
+    switchState = Journal.OFF;
+  }
+
+  public String switchState() {
+    return switchState;
+  }
+
 
   @Override
   public String toString() {

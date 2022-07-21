@@ -1,12 +1,13 @@
 package buttons;
 
+import com.mommoo.flat.button.*;
 import models.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class ModifyButton extends JButton {
+public class ModifyButton extends FlatButton {
   private JFrame writingFrame;
   private JTextField titleTextField;
   private JTextArea writingTextArea;

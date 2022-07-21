@@ -1,5 +1,6 @@
 package buttons;
 
+import com.mommoo.flat.button.*;
 import models.*;
 import panels.*;
 
@@ -8,7 +9,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.List;
 
-public class LetsGoWriteButton extends JButton {
+public class LetsGoWriteButton extends FlatButton {
   JFrame writingFrame;
   JTextField titleTextField;
   JTextArea writingTextArea;
@@ -21,7 +22,7 @@ public class LetsGoWriteButton extends JButton {
     this.setText("나만의 비밀일기 쓰러가기");
 
     this.addActionListener(letsGoWriteButtonEvent -> {
-      JButton saveButton = new JButton("저장하기");
+      FlatButton saveButton = new FlatButton("저장하기");
       openWritingWindow(saveButton);
 
       saveButton.addActionListener(saveButtonEvent -> {
@@ -45,7 +46,7 @@ public class LetsGoWriteButton extends JButton {
     });
   }
 
-  private void openWritingWindow(JButton button) {
+  private void openWritingWindow(FlatButton button) {
     writingFrame = new JFrame("나만 알고싶은 비밀 일기");
     writingFrame.setSize(400, 500);
     writingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

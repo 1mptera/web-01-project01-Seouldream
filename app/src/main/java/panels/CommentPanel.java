@@ -1,5 +1,6 @@
 package panels;
 
+import com.mommoo.flat.component.*;
 import com.mommoo.flat.text.label.*;
 import com.mommoo.flat.text.textfield.*;
 import models.*;
@@ -8,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
-public class CommentPanel extends JPanel {
+public class CommentPanel extends FlatPanel {
   private Journal journal;
   private Comment comment;
 

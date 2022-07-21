@@ -1,5 +1,6 @@
 package panels;
 import buttons.*;
+import com.mommoo.flat.button.*;
 import com.mommoo.flat.frame.*;
 import models.*;
 import javax.swing.*;
@@ -24,27 +25,13 @@ public class DiaryBoardPanel extends JPanel {
     this.publicJournals = publicJournals;
 
 
-    for(Journal journal : publicJournals) {
-      if(journal.state().equals(Journal.DELETED)) {`
-
-    }
-    if(publicJournals.size())
-
-
-
-  }
-
-      showContentPanel(publicJournals);
-
-
-
     this.setLayout(new BorderLayout());
     this.add(contentContainerPanel,BorderLayout.CENTER);
 
     showContentPanel(publicJournals);
 
 
-    JButton letsGoWriteButton = new JButton("일기 쓰러 가기");
+    FlatButton letsGoWriteButton = new FlatButton("일기 쓰러 가기");
 
     this.add(letsGoWriteButton, BorderLayout.PAGE_START);
 

@@ -28,94 +28,119 @@ public class MainFrame extends JFrame {
 
     setMenuPanel();
 
-    saveDiary(publicJournals,"input.csv");
-    saveDiary(privateJournals,"private.csv");
 
-    this.setVisible(true);
-    }
-
-
-    private void setMainFrameSetting() {
-      this.setSize(500,550);
-      this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      this.setLocationRelativeTo(null);
-      this.setLayout(new BorderLayout());
-    }
-
-    private void setMenuPanel() {
-      JPanel menuPanel = new JPanel();
-
-        this.add(menuPanel,BorderLayout.PAGE_START);
-        menuPanel.setLayout(new GridLayout(1,3));
-        menuPanel.add(createDiaryBoardButton());
-        menuPanel.add(createPrivateDiaryBoard());
-        menuPanel.add(createMessengerPanel());
-      }
-
-
-        private JButton createDiaryBoardButton() {
-          JButton button = new JButton("너의 일기가 보고싶어!");
-          button.addActionListener(event -> {
-            if(contentPanel != null) {
+    this.addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowActivated(WindowEvent e) {
+        super.windowActivated(e);
+        for (Journal journal : publicJournals) {
+          if (journal.switchState().equals(journal.ON)) {
+            if (contentPanel != null) {
               contentPanel.removeAll();
             }
             try {
               contentPanel = new DiaryBoardPanel(publicJournals);
-            } catch (FileNotFoundException e) {
-              throw new RuntimeException(e);
-            } catch (IOException e) {
-              throw new RuntimeException(e);
+            } catch (IOException ex) {
+              throw new RuntimeException(ex);
             }
-
             showContentPanel();
-          });
-          return button;}
-
-        private JButton createPrivateDiaryBoard() {
-          JButton button = new JButton("나만의 일기장");
-          button.addActionListener(event -> {
-            if(contentPanel != null) {
-              contentPanel.removeAll();
-            }
-            try {
-              contentPanel = new PrivateDiaryBoardPanel(privateJournals);
-            } catch (FileNotFoundException e) {
-              throw new RuntimeException(e);
-            } catch (IOException e) {
-              throw new RuntimeException(e);
-            }
-
-            showContentPanel();
-          });
-          return button;
-        }
-
-        private JButton createMessengerPanel() {
-          JButton button = new JButton("메신저함");
-          button.addActionListener(event -> {
-            JPanel messengerPanel = new MessengerPanel();
-          });
-          return button;
-        }
-
-        public void showContentPanel() {
-          this.add(contentPanel,BorderLayout.CENTER);
-          contentPanel.setVisible(false);
-          contentPanel.setVisible(true);
-          this.setVisible(true);
-        }
-
-        private void saveDiary(List<Journal> journals,String newFileName) {
-
-          this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent event) {
-              try{
-                fileloader.diaryWriter(journals,newFileName);
-              } catch (IOException e) {
-                throw new RuntimeException(e);
-              }
-            }
-          });
+            journal.switchOff();
+          }
         }
       }
+    });
+
+
+    saveDiary(publicJournals, "input.csv");
+    saveDiary(privateJournals, "private.csv");
+
+    this.setVisible(true);
+  }
+
+
+  private void setMainFrameSetting() {
+    this.setSize(500, 550);
+    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    this.setLocationRelativeTo(null);
+    this.setLayout(new BorderLayout());
+  }
+
+  private void setMenuPanel() {
+    JPanel menuPanel = new JPanel();
+
+    this.add(menuPanel, BorderLayout.PAGE_START);
+    menuPanel.setLayout(new GridLayout(1, 3));
+    menuPanel.add(createDiaryBoardButton());
+    menuPanel.add(createPrivateDiaryBoard());
+    menuPanel.add(createMessengerPanel());
+  }
+
+
+  private JButton createDiaryBoardButton() {
+    JButton button = new JButton("너의 일기가 보고싶어!");
+    button.addActionListener(event -> {
+      if (contentPanel != null) {
+        contentPanel.removeAll();
+      }
+      try {
+        contentPanel = new DiaryBoardPanel(publicJournals);
+      } catch (FileNotFoundException e) {
+        throw new RuntimeException(e);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      showContentPanel();
+    });
+    return button;
+  }
+
+  private JButton createPrivateDiaryBoard() {
+    JButton button = new JButton("나만의 일기장");
+    button.addActionListener(event -> {
+      if (contentPanel != null) {
+        contentPanel.removeAll();
+      }
+      try {
+        contentPanel = new PrivateDiaryBoardPanel(privateJournals);
+      } catch (FileNotFoundException e) {
+        throw new RuntimeException(e);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+
+      showContentPanel();
+    });
+    return button;
+  }
+
+  private JButton createMessengerPanel() {
+    JButton button = new JButton("메신저함");
+    button.addActionListener(event -> {
+      JPanel messengerPanel = new MessengerPanel();
+    });
+    return button;
+  }
+
+  public void showContentPanel() {
+    this.add(contentPanel, BorderLayout.CENTER);
+    contentPanel.setVisible(false);
+    contentPanel.setVisible(true);
+    this.setVisible(true);
+  }
+
+  private void saveDiary(List<Journal> journals, String newFileName) {
+
+    this.addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent event) {
+        try {
+          fileloader.diaryWriter(journals, newFileName);
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    });
+  }
+}
+
+

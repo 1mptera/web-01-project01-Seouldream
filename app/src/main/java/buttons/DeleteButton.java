@@ -1,5 +1,6 @@
 package buttons;
 
+import com.mommoo.flat.button.*;
 import models.*;
 import panels.*;
 
@@ -7,7 +8,7 @@ import javax.swing.*;
 import java.io.*;
 import java.util.List;
 
-public class DeleteButton extends JButton {
+public class DeleteButton extends FlatButton {
   public static final String INACTIVE = "INACTIVE";
   public static final String ACTIVE = "ACTIVE";
   private String state;
@@ -21,6 +22,7 @@ public class DeleteButton extends JButton {
 
     this.addActionListener(deleteButtonEvent -> {
       journal.delete();
+      sendSignal(journal);
       activate();
 
       writingFrame = (JFrame)getTopLevelAncestor();
@@ -35,6 +37,10 @@ public class DeleteButton extends JButton {
 
   public void inactivate() {
     state = DeleteButton.INACTIVE;
+  }
+
+  public void sendSignal(Journal journal) {
+    journal.switchOn();
   }
 
 

@@ -1,5 +1,6 @@
 package buttons;
 
+import com.mommoo.flat.button.*;
 import models.*;
 import panels.*;
 
@@ -8,7 +9,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.List;
 
-public class SaveButton extends JButton {
+public class SaveButton extends FlatButton {
   private JFrame writingFrame;
   private Journal journal;
   private JTextField titleTextField;
@@ -28,7 +29,7 @@ public class SaveButton extends JButton {
       writingFrame.removeAll();
       writingFrame.setVisible(false);
 
-      JButton modifyButton = new JButton("수정하기");
+      FlatButton modifyButton = new FlatButton("수정하기");
 
       openWritingWindow(journal, modifyButton, comments);
 
@@ -49,7 +50,7 @@ public class SaveButton extends JButton {
     });
   }
 
-  public void openWritingWindow(Journal journal, JButton modifyButton, List<Comment> comments) {
+  public void openWritingWindow(Journal journal, FlatButton modifyButton, List<Comment> comments) {
     writingFrame = new JFrame("오늘의 일기");
     writingFrame.setSize(400, 500);
     writingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -59,7 +60,7 @@ public class SaveButton extends JButton {
     titleTextField = new JTextField(10);
     JPanel contentPanel = new JPanel();
     writingTextArea = new JTextArea(30, 10);
-    JButton goLeaveACommentButton = new GoLeaveACommentButton(journal, comments);
+    FlatButton goLeaveACommentButton = new GoLeaveACommentButton(journal, comments);
 
     framePanel.setLayout(new BorderLayout());
     contentPanel.setLayout(new BorderLayout());
