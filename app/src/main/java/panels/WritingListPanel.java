@@ -5,6 +5,7 @@ import models.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 import java.util.List;
 
 public class WritingListPanel extends JPanel {
@@ -15,7 +16,7 @@ public class WritingListPanel extends JPanel {
 
   private List<Journal> journals;
 
-  public WritingListPanel(List<Journal> journals) {
+  public WritingListPanel(List<Journal> journals) throws IOException {
     this.journals = journals;
 
     this.setLayout(new GridLayout(0, 1));
@@ -24,54 +25,24 @@ public class WritingListPanel extends JPanel {
       if (journal.state().equals("DELETED")) {
         continue;
       }
-      JButton button = new openJournalButton(journal);
+      JButton button = new OpenJournalButton(journal,journals);
 
       this.add(button);
-
-      button.addActionListener(event -> {
-        JButton deleteButton = new JButton("삭제하기");
-
-        openWritingWindow(journal, deleteButton);
-
-        deleteButton.addActionListener(deleteButtonEvent -> {
-          journal.delete();
-          writingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-          writingFrame.setVisible(false);
-
-          this.removeAll();
-          this.setVisible(false);
-          this.add(new WritingListPanel(journals));
-          this.setVisible(true);
-        });
-      });
     }
-
-
   }
 
-  public void openWritingWindow(Journal journal, JButton button) {
-    writingFrame = new JFrame("오늘의 일기");
-    writingFrame.setSize(400, 500);
-    writingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    writingFrame.setLocationRelativeTo(this);
+  public WritingListPanel(List<Journal> journals,String onlyForMe) throws IOException {
+    this.journals = journals;
 
-    JPanel framePanel = new JPanel();
-    titleTextField = new JTextField(10);
-    writingTextArea = new JTextArea(30, 10);
+    this.setLayout(new GridLayout(0, 1));
 
-    titleTextField.setText(journal.title());
-    writingTextArea.setText(journal.content());
-    titleTextField.setEditable(false);
-    writingTextArea.setEditable((false));
+    for (Journal journal : journals) {
+      if (journal.state().equals("DELETED")) {
+        continue;
+      }
+      JButton button = new OpenJournalButton(journal,journals,this,"onlyForMe");
 
-    framePanel.setLayout(new BorderLayout());
-
-    framePanel.add(titleTextField, BorderLayout.PAGE_START);
-    framePanel.add(writingTextArea, BorderLayout.CENTER);
-    framePanel.add(button, BorderLayout.PAGE_END);
-    writingFrame.add(framePanel);
-    writingFrame.setVisible(true);
+      this.add(button);
+    }
   }
 }
-
-

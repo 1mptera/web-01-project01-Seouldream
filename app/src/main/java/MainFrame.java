@@ -59,7 +59,13 @@ public class MainFrame extends JFrame {
             if(contentPanel != null) {
               contentPanel.removeAll();
             }
-            contentPanel = new DiaryBoardPanel(publicJournals);
+            try {
+              contentPanel = new DiaryBoardPanel(publicJournals);
+            } catch (FileNotFoundException e) {
+              throw new RuntimeException(e);
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
 
             showContentPanel();
           });
@@ -71,7 +77,13 @@ public class MainFrame extends JFrame {
             if(contentPanel != null) {
               contentPanel.removeAll();
             }
-            contentPanel = new PrivateDiaryBoardPanel(privateJournals);
+            try {
+              contentPanel = new PrivateDiaryBoardPanel(privateJournals);
+            } catch (FileNotFoundException e) {
+              throw new RuntimeException(e);
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
 
             showContentPanel();
           });

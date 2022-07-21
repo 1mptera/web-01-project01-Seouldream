@@ -1,8 +1,11 @@
 package panels;
 import buttons.*;
+import com.mommoo.flat.frame.*;
 import models.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
 import java.util.*;
 import java.util.List;
 
@@ -14,13 +17,32 @@ public class DiaryBoardPanel extends JPanel {
   private JTextArea writingTextArea;
   private String title;
   private String writingContent;
+  private JPanel contentContainerPanel = new JPanel();
  // private Account account;
 
-  public DiaryBoardPanel(List<Journal> publicJournals) {
+  public DiaryBoardPanel(List<Journal> publicJournals) throws IOException {
     this.publicJournals = publicJournals;
-    // this.account = account;
+
+
+    for(Journal journal : publicJournals) {
+      if(journal.state().equals(Journal.DELETED)) {`
+
+    }
+    if(publicJournals.size())
+
+
+
+  }
+
+      showContentPanel(publicJournals);
+
+
 
     this.setLayout(new BorderLayout());
+    this.add(contentContainerPanel,BorderLayout.CENTER);
+
+    showContentPanel(publicJournals);
+
 
     JButton letsGoWriteButton = new JButton("일기 쓰러 가기");
 
@@ -39,21 +61,29 @@ public class DiaryBoardPanel extends JPanel {
 
         Journal publicJournal = new Journal(title, writingContent);
 
-
         publicJournals.add(publicJournal);
         writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         writingFrame.setVisible(false);
 
-        showContentPanel(publicJournals);
+        try {
+          showContentPanel(publicJournals);
+        } catch (FileNotFoundException e) {
+          throw new RuntimeException(e);
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
 
       });
     });
   }
 
-  private void showContentPanel(List<Journal> publicJournals) {
+
+  private void showContentPanel(List<Journal> publicJournals) throws IOException {
     if (contentPanel != null) {
       contentPanel.removeAll();
     }
+    contentPanel = new JPanel();
+    contentContainerPanel.add(contentPanel);
     contentPanel = new WritingListPanel(publicJournals);
 
     this.add(contentPanel);
@@ -68,6 +98,8 @@ public class DiaryBoardPanel extends JPanel {
     writingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     writingFrame.setLocationRelativeTo(this);
 
+
+
     JPanel framePanel = new JPanel();
     titleTextField = new JTextField(10);
     writingTextArea = new JTextArea(30, 10);
@@ -81,71 +113,4 @@ public class DiaryBoardPanel extends JPanel {
     writingFrame.setVisible(true);
   }
 }
-
-  /*  writingContentButton.addActionListener(event -> {
-      JButton deleteButton = new JButton("삭제하기");
-      openWritingWindow(deleteButton);
-      titleTextField.setText(title);
-      writingTextArea.setText(writingContent);
-
-
-      framePanel.add(deleteModifyPanel, BorderLayout.PAGE_END);
-      writingFrame.setVisible(true);
-
-      deleteButton.addActionListener(event2 -> {
-        publicJournal.delete();
-        writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        writingFrame.setVisible(false);
-        writingListPanel = new WritingListPanel();
-        //패널 뉴 -> 버튼들 (패널1)-> 지운다 ,상태바꾼다 -> 셋비지블 보여라 (패널1)->
-        refresh();
-      });
-      modifyButton.addActionListener(event3 -> {
-        publicJournal.modify();
-        titleTextField.setEditable(true);
-        writingTextArea.setEditable(true);
-        deleteModifyPanel.setLayout(new GridLayout(1, 3));
-        JButton modifySaveButton = new JButton("저장하기");
-        deleteModifyPanel.add(modifySaveButton);
-        writingFrame.setVisible(true);
-
-        modifySaveButton.addActionListener(event4 -> {
-          title = titleTextField.getText();
-          titleTextField.setText(title);
-          writingContent = writingTextArea.getText();
-          writingTextArea.setText(writingContent);
-          titleTextField.setEditable(false);
-          writingTextArea.setEditable(false);
-          //라이팅 생성
-
-          writingListPanel = new WritingListPanel(DiaryBoardPanel.this.publicJournals, writingContentButton);
-
-          refresh();
-        });
-
-      });
-    });
-  }
-
-
-}
-*//*});
-
-    });
-  }
-  private void refresh() {
-    this.add(writingListPanel);
-    writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-    writingFrame.setVisible(false);
-    writingListPanel.setVisible((false));
-    writingListPanel.setVisible(true);
-  }
-  private void refreshDisplay() {
-    writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-    writingFrame.setVisible(false);
-    writingListPanel.setVisible((false));
-    writingListPanel.setVisible(true);
-  }
-}*//*
- */
 

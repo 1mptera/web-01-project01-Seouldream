@@ -72,7 +72,7 @@ public class MyDiary {
         });
       }
       private void setLoginFrame() {
-        loginFrame = new JFrame("로그인 페이지");
+        loginFrame = new JFrame(("로그인 페이지"));
         loginFrame.setSize(350, 150);
         loginFrame.setLayout(new BorderLayout());
         loginFrame.setLocationRelativeTo(null);
