@@ -29,10 +29,10 @@ public class MyDiaryLoginMain {
 
      private void run() throws FileNotFoundException {
 
-        //JFrame temporaryMainFrame = new MainFrame(account);
-         setLoginFrame(); // - 지우지 말 것
-         setButtonsLayout();// - 지우지 말 것
-        loginFrame.setVisible(true);
+        JFrame temporaryMainFrame = new MainFrame(account);
+        // setLoginFrame(); // - 지우지 말 것
+        // setButtonsLayout();// - 지우지 말 것
+        //loginFrame.setVisible(true);
         //List<Writing> writings = loadWritings();
         loginButton.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -52,7 +52,9 @@ public class MyDiaryLoginMain {
                 JFrame mainFrame = new MainFrame(account);
               } catch (FileNotFoundException ex) {
                 throw new RuntimeException(ex);
-              }
+              } catch (IOException ex) {
+                       throw new RuntimeException(ex);
+                     }
               loginFrame.setDefaultCloseOperation(loginFrame.DO_NOTHING_ON_CLOSE);
               loginFrame.setVisible(false);
               return;

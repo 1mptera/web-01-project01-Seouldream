@@ -28,24 +28,19 @@ public class MainFrame extends JFrame {
 
     setMenuPanel();
 
-
     this.addWindowListener(new WindowAdapter() {
       @Override
       public void windowActivated(WindowEvent e) {
         super.windowActivated(e);
-        for (Journal journal : publicJournals) {
-          if (journal.switchState().equals(journal.ON)) {
-            if (contentPanel != null) {
-              contentPanel.removeAll();
-            }
-            try {
-              contentPanel = new DiaryBoardPanel(publicJournals);
-            } catch (IOException ex) {
-              throw new RuntimeException(ex);
-            }
-            showContentPanel();
-            journal.switchOff();
-          }
+        try {
+          refreshDiaryBoardPanel();
+        } catch (IOException ex) {
+          throw new RuntimeException(ex);
+        }
+        try {
+          refreshPrivateDiaryBoardPanel();
+        } catch (IOException ex) {
+          throw new RuntimeException(ex);
         }
       }
     });
@@ -56,7 +51,6 @@ public class MainFrame extends JFrame {
 
     this.setVisible(true);
   }
-
 
   private void setMainFrameSetting() {
     this.setSize(500, 550);
@@ -75,7 +69,6 @@ public class MainFrame extends JFrame {
     menuPanel.add(createMessengerPanel());
   }
 
-
   private JButton createDiaryBoardButton() {
     JButton button = new JButton("너의 일기가 보고싶어!");
     button.addActionListener(event -> {
@@ -84,8 +77,6 @@ public class MainFrame extends JFrame {
       }
       try {
         contentPanel = new DiaryBoardPanel(publicJournals);
-      } catch (FileNotFoundException e) {
-        throw new RuntimeException(e);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -102,8 +93,6 @@ public class MainFrame extends JFrame {
       }
       try {
         contentPanel = new PrivateDiaryBoardPanel(privateJournals);
-      } catch (FileNotFoundException e) {
-        throw new RuntimeException(e);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -120,6 +109,33 @@ public class MainFrame extends JFrame {
     });
     return button;
   }
+
+  private void refreshDiaryBoardPanel() throws IOException {
+    for (Journal journal : publicJournals) {
+      if (journal.switchState().equals(Journal.ON)) {
+          if (contentPanel != null) {
+            contentPanel.removeAll();
+            contentPanel = new DiaryBoardPanel(publicJournals);
+          showContentPanel();
+          journal.switchOff();
+        }
+       }
+      }
+    }
+
+  private void refreshPrivateDiaryBoardPanel() throws IOException {
+    for (Journal journal : publicJournals) {
+      if (journal.switchState().equals(Journal.ON)) {
+        if (contentPanel != null) {
+          contentPanel.removeAll();
+          contentPanel = new PrivateDiaryBoardPanel(privateJournals);
+          showContentPanel();
+          journal.switchOff();
+        }
+      }
+    }
+  }
+
 
   public void showContentPanel() {
     this.add(contentPanel, BorderLayout.CENTER);

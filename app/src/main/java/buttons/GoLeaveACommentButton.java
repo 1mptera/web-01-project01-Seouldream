@@ -19,13 +19,21 @@ public class GoLeaveACommentButton extends FlatButton {
   private List<Comment> comments;
   public GoLeaveACommentButton(Journal journal, List<Comment> comments) {
     this.setText("댓글 보러 가기");
-
+    String registerCommentButtonName = "나도 공감 한마디!";
     this.addActionListener(event -> {
-      openCommentsWindow(journal, comments);
+      openCommentsWindow(journal, comments,registerCommentButtonName);
     });
   }
 
-  public void openCommentsWindow(Journal journal, List<Comment> comments) {
+  public GoLeaveACommentButton(Journal journal, List<Comment> comments,String onlyForMe) {
+    this.setText("과거의 나에게 글 남기기");
+    String registerCommentButtonName = "미래에서 온 나 보러가기";
+    this.addActionListener(event -> {
+      openCommentsWindow(journal, comments, registerCommentButtonName);
+    });
+  }
+
+  public void openCommentsWindow(Journal journal, List<Comment> comments, String registerCommentButtonName) {
     writingFrame = new JFrame("오늘의 댓글");
     writingFrame.setSize(500, 600);
     writingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,7 +43,7 @@ public class GoLeaveACommentButton extends FlatButton {
     contentPanel = new CommentsPanel(journal,comments);
     JPanel commentRegisterPanel = new JPanel();
     JTextField textField = new JTextField(10);
-    FlatButton commentRegisterButton = new FlatButton("나도 공감 한마디!");
+    FlatButton commentRegisterButton = new FlatButton(registerCommentButtonName);
 
     commentRegisterPanel.add(textField);
     commentRegisterPanel.add(commentRegisterButton);

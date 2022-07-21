@@ -12,24 +12,21 @@ import java.util.List;
 
 public class DiaryBoardPanel extends JPanel {
   private List<Journal> publicJournals;
-  private JPanel contentPanel;
+  private JPanel contentPanel = new JPanel();
   private JFrame writingFrame;
   private JTextField titleTextField;
   private JTextArea writingTextArea;
   private String title;
   private String writingContent;
-  private JPanel contentContainerPanel = new JPanel();
  // private Account account;
 
   public DiaryBoardPanel(List<Journal> publicJournals) throws IOException {
     this.publicJournals = publicJournals;
 
-
     this.setLayout(new BorderLayout());
-    this.add(contentContainerPanel,BorderLayout.CENTER);
+    this.add(contentPanel,BorderLayout.CENTER);
 
     showContentPanel(publicJournals);
-
 
     FlatButton letsGoWriteButton = new FlatButton("일기 쓰러 가기");
 
@@ -38,39 +35,17 @@ public class DiaryBoardPanel extends JPanel {
     showContentPanel(publicJournals);
 
     letsGoWriteButton.addActionListener(letsGoWriteButtonEvent -> {
-      JButton saveButton = new JButton("저장하기");
-      openWritingWindow(saveButton);
 
-      saveButton.addActionListener(saveButtonEvent -> {
+      openWritingWindow();
 
-        title = titleTextField.getText();
-        writingContent = writingTextArea.getText();
-
-        Journal publicJournal = new Journal(title, writingContent);
-
-        publicJournals.add(publicJournal);
-        writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        writingFrame.setVisible(false);
-
-        try {
-          showContentPanel(publicJournals);
-        } catch (FileNotFoundException e) {
-          throw new RuntimeException(e);
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
-
-      });
     });
   }
-
 
   private void showContentPanel(List<Journal> publicJournals) throws IOException {
     if (contentPanel != null) {
       contentPanel.removeAll();
     }
-    contentPanel = new JPanel();
-    contentContainerPanel.add(contentPanel);
+
     contentPanel = new WritingListPanel(publicJournals);
 
     this.add(contentPanel);
@@ -79,13 +54,11 @@ public class DiaryBoardPanel extends JPanel {
     contentPanel.setVisible(true);
   }
 
-  public void openWritingWindow(JButton button) {
+  public void openWritingWindow() {
     writingFrame = new JFrame("오늘의 일기");
     writingFrame.setSize(400, 500);
     writingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     writingFrame.setLocationRelativeTo(this);
-
-
 
     JPanel framePanel = new JPanel();
     titleTextField = new JTextField(10);
@@ -95,7 +68,10 @@ public class DiaryBoardPanel extends JPanel {
 
     framePanel.add(titleTextField, BorderLayout.PAGE_START);
     framePanel.add(writingTextArea, BorderLayout.CENTER);
-    framePanel.add(button, BorderLayout.PAGE_END);
+
+    SaveButton saveButton = new SaveButton(writingFrame,titleTextField,writingTextArea,publicJournals);
+    framePanel.add(saveButton, BorderLayout.PAGE_END);
+    saveButton.setVisible(true);
     writingFrame.add(framePanel);
     writingFrame.setVisible(true);
   }

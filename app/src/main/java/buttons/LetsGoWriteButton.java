@@ -22,31 +22,11 @@ public class LetsGoWriteButton extends FlatButton {
     this.setText("나만의 비밀일기 쓰러가기");
 
     this.addActionListener(letsGoWriteButtonEvent -> {
-      FlatButton saveButton = new FlatButton("저장하기");
-      openWritingWindow(saveButton);
-
-      saveButton.addActionListener(saveButtonEvent -> {
-        String title = titleTextField.getText();
-        String writingContent = writingTextArea.getText();
-
-        Journal journal = new Journal(title, writingContent);
-
-        journals.add(journal);
-        writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        writingFrame.setVisible(false);
-
-        try {
-          showContentPanel(journals);
-        } catch (FileNotFoundException e) {
-          throw new RuntimeException(e);
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
-      });
+      openWritingWindow();
     });
   }
 
-  private void openWritingWindow(FlatButton button) {
+  private void openWritingWindow() {
     writingFrame = new JFrame("나만 알고싶은 비밀 일기");
     writingFrame.setSize(400, 500);
     writingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -60,7 +40,9 @@ public class LetsGoWriteButton extends FlatButton {
 
     framePanel.add(titleTextField, BorderLayout.PAGE_START);
     framePanel.add(writingTextArea, BorderLayout.CENTER);
-    framePanel.add(button, BorderLayout.PAGE_END);
+
+    FlatButton saveButton = new SaveButton(writingFrame,titleTextField,writingTextArea,journals);
+    framePanel.add(saveButton, BorderLayout.PAGE_END);
     writingFrame.add(framePanel);
     writingFrame.setVisible(true);
   }

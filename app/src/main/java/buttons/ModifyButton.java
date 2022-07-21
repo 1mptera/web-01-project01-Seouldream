@@ -25,8 +25,7 @@ public class ModifyButton extends FlatButton {
       writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
       writingFrame.setVisible(false);
 
-      JButton saveButton = new SaveButton(writingFrame,
-          journal,journals,comments);
+      JButton saveButton = new SaveButton(writingFrame,journal,journals,"onlyForMe");
 
       openWritingWindow(journal, saveButton, comments);
       titleTextField.setEditable(true);

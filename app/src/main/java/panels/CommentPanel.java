@@ -22,7 +22,7 @@ public class CommentPanel extends FlatPanel {
     JLabel label = new JLabel(comment.nickName());
     JTextField textField = new JTextField(30);
     textField.setText(comment.content());
-    //textField.setEditable(false);
+    textField.setEditable(false);
 
     label.setSize(10,5);
     textField.setSize(30,5);

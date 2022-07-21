@@ -46,7 +46,7 @@ public class OpenJournalButton extends FlatButton {
   }
 
   public OpenJournalButton(Journal journal, List<Journal> journals
-      , WritingListPanel writingListPanel, String onlyForMe) throws IOException {
+      , String onlyForMe) throws IOException {
     this.journal = journal;
     this.state = Journal.PUBLISHED;
     this.setText(journal.title());
@@ -74,6 +74,7 @@ public class OpenJournalButton extends FlatButton {
       titleTextField = new JTextField(10);
       JPanel contentPanel = new JPanel();
       writingTextArea = new JTextArea(30, 10);
+
       FlatButton goLeaveACommentButton = new GoLeaveACommentButton(journal, comments);
 
       framePanel.setLayout(new BorderLayout());

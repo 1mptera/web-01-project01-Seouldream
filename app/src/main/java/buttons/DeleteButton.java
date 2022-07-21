@@ -23,7 +23,6 @@ public class DeleteButton extends FlatButton {
     this.addActionListener(deleteButtonEvent -> {
       journal.delete();
       sendSignal(journal);
-      activate();
 
       writingFrame = (JFrame)getTopLevelAncestor();
       writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
