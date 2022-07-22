@@ -17,7 +17,6 @@ public class CommentsPanel extends JPanel {
     this.journal = journal;
     this.comments = comments;
 
-
     for (Comment comment : comments) {
       if (comment.state().equals("DELETED") ||
           !Objects.equals(comment.id(), journal.id())) {

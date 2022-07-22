@@ -17,7 +17,7 @@ public class WritingListPanel extends JPanel {
   private List<Journal> journals;
   private List<Comment> publicComments;
 
-  public WritingListPanel(List<Journal> journals, List<Comment> publicComments) throws IOException {
+  public WritingListPanel(Account account,List<Journal> journals, List<Comment> publicComments) throws IOException {
     this.journals = journals;
     this.publicComments = publicComments;
 
@@ -27,13 +27,13 @@ public class WritingListPanel extends JPanel {
       if (journal.state().equals("DELETED")) {
         continue;
       }
-      JButton button = new OpenJournalButton(journal,journals,publicComments);
+      JButton button = new OpenJournalButton(account,journal,journals,publicComments);
 
       this.add(button);
     }
   }
 
-  public WritingListPanel(List<Journal> journals,List<Comment> privateComments,String onlyForMe) throws IOException {
+  public WritingListPanel(Account account,List<Journal> journals,List<Comment> privateComments,String onlyForMe) throws IOException {
     this.journals = journals;
 
     this.setLayout(new GridLayout(0, 1));
@@ -42,7 +42,7 @@ public class WritingListPanel extends JPanel {
       if (journal.state().equals("DELETED")) {
         continue;
       }
-      JButton button = new OpenJournalButton(journal,privateComments,"onlyForMe");
+      JButton button = new OpenJournalButton(account,journal,privateComments,"onlyForMe");
 
       this.add(button);
     }

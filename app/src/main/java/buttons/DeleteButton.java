@@ -29,6 +29,20 @@ public class DeleteButton extends FlatButton {
     });
   }
 
+  public DeleteButton(Message message) {
+    this.setText("삭제하기");
+    this.state = DeleteButton.INACTIVE;
+
+    this.addActionListener(deleteButtonEvent -> {
+      message.delete();
+      sendMessageSignal(message);
+
+      writingFrame = (JFrame)getTopLevelAncestor();
+      writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+      writingFrame.setVisible(false);
+    });
+  }
+
   public void activate() {
     state = DeleteButton.ACTIVE;
   }
@@ -39,6 +53,10 @@ public class DeleteButton extends FlatButton {
 
   public void sendSignal(Journal journal) {
     journal.switchOn();
+  }
+
+  public void sendMessageSignal(Message message) {
+    message.switchOn();
   }
 
 

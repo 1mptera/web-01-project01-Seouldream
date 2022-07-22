@@ -7,17 +7,20 @@ public class Journal {
   public static final String MODIFIED = "MODIFIED";
   public static String ON = "ON";
   public static String OFF = "OFF";
-
   private String id;
+  private String writer;
   private String title;
   private String content;
   private String state;
   private String switchState;
+  private Account account;
 
-  public Journal(String title, String content) {
+  public Journal(Account account,String title, String content) {
+    this.account = account;
     this.id = String.valueOf(UUID.randomUUID());
     this.title = title;
     this.content = content;
+    this.writer = account.ID();
     this.state = Journal.PUBLISHED;
     this.switchState = Journal.OFF;
   }
@@ -32,6 +35,10 @@ public class Journal {
 
   public String id() {
     return id;
+  }
+
+  public String writer() {
+    return writer;
   }
 
   public String title() {
@@ -94,6 +101,8 @@ public class Journal {
   }
 
   public String toCsvRow() {
-    return title + "," + content + "," + state;
+    return account.ID()+ "," + account.password() + "," + account.nickName()+
+        "," + title + "," + content + "," + state;
   }
+
 }

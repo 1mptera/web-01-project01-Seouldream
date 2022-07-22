@@ -1,36 +1,48 @@
 import models.*;
 import panels.*;
-import utils.*;
-
+import java.io.File;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
 import java.util.List;
 
 public class MainFrame extends JFrame {
   private Account account;
   private JPanel contentPanel;
-  private Fileloader fileloader;
+  private FileLoader fileloader;
   private List<Journal> publicJournals;
   private List<Journal> privateJournals;
   private List<Comment> publicComments;
   private List<Comment> privateComments;
+  private List<Message> messages = new ArrayList<>();
+  private String receiver;
 
-  MainFrame(Account account) throws FileNotFoundException {
-    fileloader = new Fileloader();
-    String publicJournalFile = "input.csv";
-    String myJournalFile = "private.csv";
+  MainFrame(Account account) throws IOException {
+    fileloader = new FileLoader();
+    String myJournalFile = "privateJournals+"+ "" + account.ID() + ".csv";
+    File newFile = new File("/Users/myunghoonkim/myDiary/" +
+        myJournalFile);
+    System.out.print("참" + newFile.exists());
+
+    if(newFile.exists()) {
+      privateJournals = fileloader.loadWritings(myJournalFile);
+    }
+    if(!newFile.exists()) {
+      FileWriter fileWriter = new FileWriter(myJournalFile);
+      privateJournals = fileloader.loadWritings(myJournalFile);
+    }
+    String publicJournalFile = "publicJournals.csv";
     publicJournals = fileloader.loadWritings(publicJournalFile);
-    privateJournals = fileloader.loadWritings(myJournalFile);
-
 
     String publicCommentsFile = "publicComments.csv";
     String privateCommentsFile = "privateComments.csv";
-
     publicComments = fileloader.loadComments(publicCommentsFile);
-    privateComments = fileloader.loadComments(privateCommentsFile);
 
+    System.out.println(publicComments);
+    privateComments = fileloader.loadComments(privateCommentsFile);
+    System.out.println(privateComments);
     this.account = account;
 
     setMainFrameSetting();
@@ -51,15 +63,19 @@ public class MainFrame extends JFrame {
         } catch (IOException ex) {
           throw new RuntimeException(ex);
         }
+        try {
+          refreshMessengerPanel();
+        } catch (IOException ex) {
+          throw new RuntimeException(ex);
+        }
       }
     });
 
-
-    saveDiary(publicJournals, "input.csv");
-    saveDiary(privateJournals, "private.csv");
-
+    saveDiary(publicJournals, "publicJournals.csv");
+    saveDiary(privateJournals, myJournalFile);
     saveComments(publicComments, "publicComments.csv");
     saveComments(privateComments, "privateComments.csv");
+    saveAccounts(MyDiaryLoginMain.accountsList, "accountsList.csv");
 
     this.setVisible(true);
   }
@@ -88,7 +104,7 @@ public class MainFrame extends JFrame {
         contentPanel.removeAll();
       }
       try {
-        contentPanel = new DiaryBoardPanel(publicJournals,publicComments);
+        contentPanel = new DiaryBoardPanel(account,publicJournals,publicComments);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -104,7 +120,7 @@ public class MainFrame extends JFrame {
         contentPanel.removeAll();
       }
       try {
-        contentPanel = new PrivateDiaryBoardPanel(privateJournals,privateComments);
+        contentPanel = new PrivateDiaryBoardPanel(account,privateJournals,privateComments);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -116,7 +132,12 @@ public class MainFrame extends JFrame {
   private JButton createMessengerPanel() {
     JButton button = new JButton("메신저함");
     button.addActionListener(event -> {
-      JPanel messengerPanel = new MessengerPanel();
+      try {
+        JPanel messengerPanel = new MessengerPanel(account,receiver,messages);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      showContentPanel();
     });
     return button;
   }
@@ -126,7 +147,7 @@ public class MainFrame extends JFrame {
       if (journal.switchState().equals(Journal.ON)) {
           if (contentPanel != null) {
             contentPanel.removeAll();
-            contentPanel = new DiaryBoardPanel(publicJournals, publicComments);
+            contentPanel = new DiaryBoardPanel(account,publicJournals, publicComments);
           showContentPanel();
           journal.switchOff();
         }
@@ -139,7 +160,7 @@ public class MainFrame extends JFrame {
       if (journal.switchState().equals(Journal.ON)) {
         if (contentPanel != null) {
           contentPanel.removeAll();
-          contentPanel = new PrivateDiaryBoardPanel(privateJournals, privateComments);
+          contentPanel = new PrivateDiaryBoardPanel(account,privateJournals, privateComments);
           showContentPanel();
           journal.switchOff();
         }
@@ -147,6 +168,18 @@ public class MainFrame extends JFrame {
     }
   }
 
+  private void refreshMessengerPanel() throws IOException {
+    for (Message message : messages) {
+      if (message.switchState().equals(Message.ON)) {
+        if (contentPanel != null) {
+          contentPanel.removeAll();
+          contentPanel = new MessengerPanel(account,receiver,messages);
+          showContentPanel();
+          message.switchOff();
+        }
+      }
+    }
+  }
 
   public void showContentPanel() {
     this.add(contentPanel, BorderLayout.CENTER);
@@ -156,7 +189,6 @@ public class MainFrame extends JFrame {
   }
 
   private void saveDiary(List<Journal> journals, String newFileName) {
-
     this.addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent event) {
@@ -170,12 +202,25 @@ public class MainFrame extends JFrame {
   }
 
   private void saveComments(List<Comment> comments, String newFileName) {
-
     this.addWindowListener(new WindowAdapter() {
       @Override
       public void windowActivated(WindowEvent event) {
         try {
           fileloader.commentsWriter(comments, newFileName);
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    });
+  }
+
+  private void saveAccounts(List<Account> accountsList, String newFileName) {
+    this.addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowActivated(WindowEvent event) {
+        try {
+
+          fileloader.accountsWriter(accountsList, newFileName);
         } catch (IOException e) {
           throw new RuntimeException(e);
         }

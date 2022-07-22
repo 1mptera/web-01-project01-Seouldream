@@ -9,8 +9,9 @@ import java.io.*;
 import java.util.List;
 
 public class OpenJournalButton extends FlatButton {
-  private String title;
-  private String writingContent;
+  //private String title;
+  //private String writingContent;
+  private Account account;
   private Journal journal;
   private List<Journal> journals;
   private String state;
@@ -20,22 +21,20 @@ public class OpenJournalButton extends FlatButton {
   private JTextField titleTextField;
   private JTextArea writingTextArea;
   private List<Comment> publicComments;
-  private List<Comment> privateComments;
+ // private List<Comment> privateComments;
 
 
 
-  public OpenJournalButton(Journal journal, List<Journal> journals, List<Comment> publicComments) throws IOException {
+  public OpenJournalButton(Account account,Journal journal, List<Journal> journals, List<Comment> publicComments) throws IOException {
+    this.account = account;
     this.journal = journal;
     this.journals = journals;
     this.publicComments = publicComments;
     this.state = Journal.PUBLISHED;
-    this.setText(journal.title());
+    this.setText(journal.title() + "\t작성자: " +journal.writer() );
     this.setBackground(Color.getHSBColor(1,2,3));
     this.setForeground(Color.BLACK);
-    JPanel diaryBoardPanel = (JPanel)getTopLevelAncestor();
-
-
-
+  //  JPanel diaryBoardPanel = (JPanel)getTopLevelAncestor();
 
     this.addActionListener(event -> {
 
@@ -43,7 +42,7 @@ public class OpenJournalButton extends FlatButton {
 
       FlatButton deleteButton = new DeleteButton(journal);
 
-      FlatButton goLeaveACommentButton = new GoLeaveACommentButton(journal,
+      FlatButton goLeaveACommentButton = new GoLeaveACommentButton(account,journal,
           publicComments);
       contentPanel.add(goLeaveACommentButton, BorderLayout.PAGE_END);
       framePanel.add(deleteButton, BorderLayout.PAGE_END);
@@ -54,7 +53,7 @@ public class OpenJournalButton extends FlatButton {
     });
   }
 
-  public OpenJournalButton(Journal journal,List<Comment> privateComments,String onlyForMe) throws IOException {
+  public OpenJournalButton(Account account,Journal journal,List<Comment> privateComments,String onlyForMe) throws IOException {
     this.journal = journal;
     this.state = Journal.PUBLISHED;
     this.setText(journal.title());
@@ -66,10 +65,10 @@ public class OpenJournalButton extends FlatButton {
       openWritingFrame(journal);
     //  FlatButton deleteButton = new DeleteButton(journal,journals);
 
-      FlatButton modifyButton = new ModifyButton(writingFrame,
+      FlatButton modifyButton = new ModifyButton(account,writingFrame,
           titleTextField,writingTextArea,journal, privateComments);
 
-      FlatButton goLeaveACommentButton = new GoLeaveACommentButton(journal, privateComments,"onlyForMe");
+      FlatButton goLeaveACommentButton = new GoLeaveACommentButton(account,journal, privateComments,"onlyForMe");
 
       contentPanel.add(goLeaveACommentButton, BorderLayout.PAGE_END);
       framePanel.add(modifyButton, BorderLayout.PAGE_END);

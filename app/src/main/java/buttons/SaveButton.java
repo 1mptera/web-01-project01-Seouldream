@@ -2,11 +2,9 @@ package buttons;
 
 import com.mommoo.flat.button.*;
 import models.*;
-import panels.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.*;
 import java.util.List;
 
 public class SaveButton extends FlatButton {
@@ -17,14 +15,14 @@ public class SaveButton extends FlatButton {
   private List<Comment> publicComments;
 
 
-  public SaveButton(JFrame writingFrame,JTextField titleTextField,JTextArea writingTextArea,List<Journal> journals) {
+  public SaveButton(Account account, JFrame writingFrame, JTextField titleTextField,JTextArea writingTextArea, List<Journal> journals) {
     this.writingFrame = writingFrame;
     this.setText("저장하기");
 
     this.addActionListener(saveButtonEvent -> {
      String title =  titleTextField.getText();
      String writingContent = writingTextArea.getText();
-     Journal publicJournal = new Journal(title, writingContent);
+     Journal publicJournal = new Journal(account,title, writingContent);
      publicJournal.switchOn();
 
      journals.add(publicJournal);
@@ -33,7 +31,22 @@ public class SaveButton extends FlatButton {
     });
   }
 
-  public SaveButton(JFrame writingFrame,Journal journal,
+  public SaveButton(Account account,JFrame messageFrame,String receiver
+      ,JTextArea messageTextArea,List<Message> messages) {
+    this.setText("저장하기");
+
+    this.addActionListener(saveButtonEvent -> {
+      String text = messageTextArea.getText();
+      Message message = new Message(account,receiver,text);
+      message.switchOn();
+
+      messages.add(message);
+      writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+      writingFrame.setVisible(false);
+    });
+  }
+
+  public SaveButton(Account account,JFrame writingFrame,Journal journal,
         JTextField titleTextField,JTextArea writingTextArea,String onlyForMe) {
     this.writingFrame = writingFrame;
     this.setText("수정내용 저장하기");

@@ -13,10 +13,12 @@ public class LetsGoWriteButton extends FlatButton {
   JFrame writingFrame;
   JTextField titleTextField;
   JTextArea writingTextArea;
+  private Account account;
   private List<Journal> journals;
   private JPanel contentPanel;
 
-  public LetsGoWriteButton(List<Journal> journals,JPanel contentPanel) {
+  public LetsGoWriteButton(Account account,List<Journal> journals,JPanel contentPanel) {
+    this.account = account;
     this.journals = journals;
     this.contentPanel = contentPanel;
     this.setText("나만의 비밀일기 쓰러가기");
@@ -41,7 +43,7 @@ public class LetsGoWriteButton extends FlatButton {
     framePanel.add(titleTextField, BorderLayout.PAGE_START);
     framePanel.add(writingTextArea, BorderLayout.CENTER);
 
-    FlatButton saveButton = new SaveButton(writingFrame,titleTextField,writingTextArea,journals);
+    FlatButton saveButton = new SaveButton(account,writingFrame,titleTextField,writingTextArea,journals);
     framePanel.add(saveButton, BorderLayout.PAGE_END);
     writingFrame.add(framePanel);
     writingFrame.setVisible(true);

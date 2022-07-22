@@ -12,10 +12,12 @@ public class PrivateDiaryBoardPanel extends JPanel {
   private JFrame writingFrame;
   private JTextField titleTextField;
   private JTextArea writingTextArea;
+  private Account account;
   private List<Journal> privateJournals;
   private List<Comment> privateComments;
 
-  public PrivateDiaryBoardPanel(List<Journal> privateJournals, List<Comment> privateComments) throws IOException {
+  public PrivateDiaryBoardPanel(Account account,List<Journal> privateJournals, List<Comment> privateComments) throws IOException {
+    this.account = account;
     this.privateJournals = privateJournals;
     this.privateComments = privateComments;
 
@@ -28,7 +30,7 @@ public class PrivateDiaryBoardPanel extends JPanel {
 
     this.add(letsGoWriteButton, BorderLayout.PAGE_START);
 
-    showContentPanel(privateJournals,privateComments);
+    showContentPanel(account,privateJournals,privateComments);
 
     letsGoWriteButton.addActionListener(letsGoWriteButtonEvent -> {
 
@@ -37,12 +39,12 @@ public class PrivateDiaryBoardPanel extends JPanel {
     });
   }
 
-  private void showContentPanel(List<Journal> privateJournals, List<Comment> privateComments) throws IOException {
+  private void showContentPanel(Account account,List<Journal> privateJournals, List<Comment> privateComments) throws IOException {
     if (contentPanel != null) {
       contentPanel.removeAll();
     }
 
-    contentPanel = new WritingListPanel(privateJournals,privateComments,"onlyForMe");
+    contentPanel = new WritingListPanel(account,privateJournals,privateComments,"onlyForMe");
 
     this.add(contentPanel);
 
@@ -65,7 +67,7 @@ public class PrivateDiaryBoardPanel extends JPanel {
     framePanel.add(titleTextField, BorderLayout.PAGE_START);
     framePanel.add(writingTextArea, BorderLayout.CENTER);
 
-    SaveButton saveButton = new SaveButton(writingFrame,titleTextField,writingTextArea,privateJournals);
+    SaveButton saveButton = new SaveButton(account,writingFrame,titleTextField,writingTextArea,privateJournals);
     framePanel.add(saveButton, BorderLayout.PAGE_END);
     writingFrame.add(framePanel);
     writingFrame.setVisible(true);

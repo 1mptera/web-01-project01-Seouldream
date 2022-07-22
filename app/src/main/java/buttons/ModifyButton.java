@@ -11,7 +11,7 @@ public class ModifyButton extends FlatButton {
   private JFrame writingFrame;
 
 
-  public ModifyButton(JFrame writingFrame,
+  public ModifyButton(Account account,JFrame writingFrame,
        JTextField titleTextField, JTextArea writingTextArea,Journal journal,List<Comment> comments) {
     this.writingFrame = writingFrame;
     this.setText("수정하기");
@@ -22,12 +22,12 @@ public class ModifyButton extends FlatButton {
       writingFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
       writingFrame.setVisible(false); }
 
-      openWritingWindow(journal,titleTextField,writingTextArea,comments);
+      openWritingWindow(account,journal,titleTextField,writingTextArea,comments);
 
     });
   }
 
-  public void openWritingWindow(Journal journal,
+  public void openWritingWindow(Account account,Journal journal,
     JTextField titleTextField,JTextArea writingTextArea, List<Comment> comments) {
     writingFrame = new JFrame("오늘의 일기");
     writingFrame.setSize(400, 500);
@@ -45,8 +45,8 @@ public class ModifyButton extends FlatButton {
     framePanel.setLayout(new BorderLayout());
     contentPanel.setLayout(new BorderLayout());
 
-    JButton goLeaveACommentButton = new GoLeaveACommentButton(journal, comments);
-    JButton saveButton = new SaveButton(writingFrame,journal,titleTextField,writingTextArea,"onlyForMe");
+    JButton goLeaveACommentButton = new GoLeaveACommentButton(account,journal, comments);
+    JButton saveButton = new SaveButton(account,writingFrame,journal,titleTextField,writingTextArea,"onlyForMe");
 
     framePanel.add(titleTextField, BorderLayout.PAGE_START);
     framePanel.add(contentPanel, BorderLayout.CENTER);
